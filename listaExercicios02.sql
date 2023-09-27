@@ -66,3 +66,28 @@ BEGIN
     WHERE Ano_Publicacao <= ano;
 END;
 
+6. Extração de títulos por categoria:
+sql
+DELIMITER //
+
+CREATE PROCEDURE sp_TitulosPorCategoria(IN categoria_nome VARCHAR(100))
+BEGIN
+    DECLARE done INT DEFAULT 0;
+    DECLARE livro_titulo VARCHAR(255);
+    DECLARE cur CURSOR FOR
+        SELECT Livro.Titulo
+        FROM Livro
+        INNER JOIN Categoria ON Livro.Categoria_ID = Categoria.Categoria_ID
+        WHERE Categoria.Nome = categoria_nome;
+    DECLARE CONTINUE HANDLER FOR NOT FOUND SET done = 1;
+    
+    OPEN cur;
+    read_loop: LOOP
+        FETCH cur INTO livro_titulo;
+        IF done THEN
+            LEAVE read_loop;
+        END IF;
+        SELECT livro_titulo;
+    END LOOP;
+    CLOSE cur;
+END;
