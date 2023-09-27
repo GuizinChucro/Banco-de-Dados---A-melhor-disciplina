@@ -54,4 +54,15 @@ BEGIN
     END IF;
 END;
 
+5. Listagem de Livros por Ano:
+
+sql
+DELIMITER //
+
+CREATE PROCEDURE sp_LivrosAteAno(IN ano INT)
+BEGIN
+    SELECT *
+    FROM Livro
+    WHERE Ano_Publicacao <= ano;
+END;
 
