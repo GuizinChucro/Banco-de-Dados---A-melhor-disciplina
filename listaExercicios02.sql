@@ -31,4 +31,27 @@ BEGIN
     SELECT COUNT(Livro.Livro_ID) AS total
     FROM Livro
     INNER JOIN Categoria ON Livro.Categoria_ID = Categoria.Categoria_ID
+    WHERE Categoria.Nome = categoria_nome;
+END;
+
+
+4. Verificação de livros por categoria:
+
+sql
+DELIMITER //
+
+CREATE PROCEDURE sp_VerificarLivrosCategoria(IN categoria_nome VARCHAR(100))
+BEGIN
+    DECLARE total INT;
     
+    CALL sp_ContarLivrosPorCategoria(categoria_nome);
+    SELECT total INTO total;
+    
+    IF total > 0 THEN
+        SELECT 'A categoria possui livros.' AS mensagem;
+    ELSE
+        SELECT 'A categoria não possui livros.' AS mensagem;
+    END IF;
+END;
+
+
