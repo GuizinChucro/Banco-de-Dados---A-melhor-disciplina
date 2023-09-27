@@ -91,3 +91,19 @@ BEGIN
     END LOOP;
     CLOSE cur;
 END;
+
+7. Adição de Livro com Tratamento de Erros:
+
+sql
+DELIMITER //
+
+CREATE PROCEDURE sp_AdicionarLivro(IN titulo VARCHAR(255), IN editora_id INT, IN ano_publicacao INT, IN numero_paginas INT, IN categoria_id INT)
+BEGIN
+    DECLARE CONTINUE HANDLER FOR SQLEXCEPTION
+        SELECT 'Erro: Título já existente.' AS mensagem;
+    
+    INSERT INTO Livro (Titulo, Editora_ID, Ano_Publicacao, Numero_Paginas, Categoria_ID)
+    VALUES (titulo, editora_id, ano_publicacao, numero_paginas, categoria_id);
+    
+    SELECT 'Livro adicionado com sucesso.' AS mensagem;
+END;
